@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime    @default(now())
+  preferences  Preferences?
+  trips        Trip[]
+}
+
+model Preferences {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interests   String[]
+  pace        String   // "relaxed" | "moderate" | "intense"
+  budgetRange String   // "budget" | "mid" | "luxury"
+  language    String   @default("es")
+}
+
+model Trip {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination String
+  days        Int
+  budget      Float
+  status      String     @default("draft") // "draft" | "saved" | "archived"
+  createdAt   DateTime   @default(now())
+  activities  Activity[]
+}
+
+model Activity {
+  id          String  @id @default(cuid())
+  tripId      String
+  trip        Trip    @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  dayNumber   Int
+  order       Int
+  name        String
+  description String?
+  cost        Float   @default(0)
+  durationMin Int?
+  category    String  // "food" | "culture" | "outdoor" | "transport" | "accommodation"
+  isFavorite  Boolean @default(false)
+}
