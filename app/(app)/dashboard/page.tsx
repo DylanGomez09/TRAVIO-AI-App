@@ -1,6 +1,6 @@
 ﻿import { auth } from "@/auth"
 import { redirect } from "next/navigation"
-import { prisma } from "@/lib/prisma"
+import { getCachedUserTrips } from "@/lib/cache"
 import Link from "next/link"
 import Header from "@/app/components/Header"
 import TripCard from "@/app/components/TripCard"
@@ -11,11 +11,7 @@ export default async function DashboardPage() {
 
   const firstName = session.user?.name?.split(" ")[0] || "Traveler"
 
-  const trips = await prisma.trip.findMany({
-    where: { userId: session.user.id, status: "saved" },
-    orderBy: { createdAt: "desc" },
-    take: 3,
-  })
+  const trips = await getCachedUserTrips(session.user.id)
 
   return (
     <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">

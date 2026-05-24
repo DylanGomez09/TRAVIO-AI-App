@@ -1,4 +1,4 @@
-﻿import { prisma } from "@/lib/prisma"
+﻿import { getCachedTrip } from "@/lib/cache"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
@@ -15,12 +15,7 @@ export default async function TripPage({
 
   const { id } = await params
 
-  const trip = await prisma.trip.findUnique({
-    where: { id },
-    include: {
-      activities: { orderBy: [{ dayNumber: "asc" }, { order: "asc" }] },
-    },
-  })
+  const trip = await getCachedTrip(id)
 
   if (!trip) redirect("/dashboard")
 
