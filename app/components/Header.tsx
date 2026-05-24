@@ -8,7 +8,7 @@ import Navbar from "@/app/components/Navbar";
 const navItems = [
   { label: "Explore", href: "/" },
   { label: "Trips", href: "/dashboard" },
-  { label: "Concierge", href: "#" },
+  { label: "Concierge", href: "/concierge" },
   { label: "Saved", href: "/saved" },
 ];
 
