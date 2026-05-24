@@ -1,5 +1,6 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
+import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 
 export default async function DashboardPage() {
@@ -8,6 +9,12 @@ export default async function DashboardPage() {
 
   const firstName = session.user?.name?.split(" ")[0] || "Traveler"
 
+  const trips = await prisma.trip.findMany({
+    where: { userId: session.user.id, status: "saved" },
+    orderBy: { createdAt: "desc" },
+    take: 5,
+  })
+
   return (
     <div className="min-h-screen bg-[#F9F9F9] pb-32">
       {/* Header */}
@@ -15,12 +22,10 @@ export default async function DashboardPage() {
         <button className="text-[#092634]">☰</button>
         <span className="text-[#092634] text-sm tracking-widest uppercase"
           style={{ fontFamily: "var(--font-literata)" }}>
-          Voyager AI
+          Travio AI
         </span>
         <div className="w-8 h-8 rounded-full bg-[#092634] flex items-center justify-center">
-          <span className="text-white text-xs font-medium">
-            {firstName[0]}
-          </span>
+          <span className="text-white text-xs font-medium">{firstName[0]}</span>
         </div>
       </header>
 
@@ -36,55 +41,56 @@ export default async function DashboardPage() {
         </h1>
       </div>
 
-      {/* Saved Trips */}
       <div className="px-6">
+        {/* Saved Trips */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-semibold text-[#092634]"
             style={{ fontFamily: "var(--font-manrope)" }}>
             Saved Trips
           </h2>
-          <button className="text-xs text-gray-400 hover:text-[#092634]"
+          <Link href="/saved" className="text-xs text-gray-400 hover:text-[#092634]"
             style={{ fontFamily: "var(--font-manrope)" }}>
             View all
-          </button>
+          </Link>
         </div>
 
-        {/* Trip cards — placeholder */}
-        <div className="flex flex-col gap-4">
-          {[
-            { city: "Tokyo, Japan", dates: "Oct 12 – Oct 20, 2024", img: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600", current: true },
-            { city: "Amalfi Coast, Italy", dates: "June 04 – June 12, 2026", img: "https://images.unsplash.com/photo-1612698093158-e07ac200d44e?w=600" },
-            { city: "Paris, France", dates: "Dec 20 – Dec 28, 2026", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600" },
-          ].map((trip) => (
-            <div key={trip.city} className="relative rounded-2xl overflow-hidden h-36 cursor-pointer">
-              <img src={trip.img} alt={trip.city}
-                className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute bottom-3 left-4">
-                <p className="text-white font-semibold text-base"
-                  style={{ fontFamily: "var(--font-literata)" }}>
-                  {trip.city}
-                </p>
-                <p className="text-white/70 text-xs"
-                  style={{ fontFamily: "var(--font-manrope)" }}>
-                  {trip.dates}
-                </p>
-              </div>
-              {trip.current && (
-                <div className="absolute bottom-3 right-4 bg-[#FF6E42] rounded-full px-3 py-1">
-                  <span className="text-white text-xs font-medium"
+        {trips.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center mb-6">
+            <p className="text-gray-400 text-sm mb-4"
+              style={{ fontFamily: "var(--font-manrope)" }}>
+              No saved trips yet.
+            </p>
+            <Link href="/new-trip"
+              className="text-sm text-[#FF6E42] font-medium hover:underline"
+              style={{ fontFamily: "var(--font-manrope)" }}>
+              Plan your first trip →
+            </Link>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4 mb-6">
+            {trips.map(trip => (
+              <Link key={trip.id} href={`/trip/${trip.id}`}
+                className="relative rounded-2xl overflow-hidden h-36 cursor-pointer block">
+                <div className="w-full h-full bg-[#092634]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-3 left-4">
+                  <p className="text-white font-semibold text-base"
+                    style={{ fontFamily: "var(--font-literata)" }}>
+                    {trip.destination}
+                  </p>
+                  <p className="text-white/70 text-xs"
                     style={{ fontFamily: "var(--font-manrope)" }}>
-                    Current
-                  </span>
+                    {trip.days} days · {trip.budget === 500 ? "Budget" : trip.budget === 2000 ? "Mid-Range" : "Luxury"}
+                  </p>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* Plan New Trip */}
         <Link href="/new-trip"
-          className="mt-6 w-full bg-[#FF6E42] text-white rounded-full py-3 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#e85e35] transition-colors"
+          className="w-full bg-[#FF6E42] text-white rounded-full py-3 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#e85e35] transition-colors"
           style={{ fontFamily: "var(--font-manrope)" }}>
           ⊕ Plan New Trip
         </Link>
@@ -97,18 +103,13 @@ export default async function DashboardPage() {
           </h3>
           <p className="text-xs text-gray-500 mb-4"
             style={{ fontFamily: "var(--font-manrope)" }}>
-            Based on your interest in <span className="font-medium text-[#092634]">Zen Architecture</span>, we've found a hidden Ryokan in Hakone for your Tokyo stay.
+            Plan your next adventure — your AI concierge is ready to curate a bespoke journey for you.
           </p>
-          <div className="flex gap-3">
-            <button className="text-xs border border-gray-200 rounded-full px-4 py-2 text-[#092634] hover:bg-gray-50"
-              style={{ fontFamily: "var(--font-manrope)" }}>
-              See Details
-            </button>
-            <button className="text-xs text-gray-400 hover:text-gray-600"
-              style={{ fontFamily: "var(--font-manrope)" }}>
-              Dismiss
-            </button>
-          </div>
+          <Link href="/new-trip"
+            className="text-xs border border-gray-200 rounded-full px-4 py-2 text-[#092634] hover:bg-gray-50 inline-block"
+            style={{ fontFamily: "var(--font-manrope)" }}>
+            Start Planning
+          </Link>
         </div>
       </div>
 

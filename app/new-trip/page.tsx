@@ -23,8 +23,14 @@ export default function NewTripPage() {
 
   useEffect(() => {
     if (editId) {
-      // TODO: fetch trip by editId and prefill form
-      console.log("Preloading trip:", editId)
+      fetch(`/api/trip/${editId}`)
+        .then(res => res.json())
+        .then(data => {
+          setDestination(data.destination || "")
+          setDays(String(data.days || ""))
+          setBudget(data.budget === 500 ? "budget" : data.budget === 2000 ? "mid" : "luxury")
+        })
+        .catch(() => {})
     }
   }, [editId])
 
@@ -44,6 +50,7 @@ export default function NewTripPage() {
 
   return (
     <div className="min-h-screen bg-[#F9F9F9] pb-32">
+      <div className="max-w-lg mx-auto">
       {/* Header */}
       <header className="flex items-center justify-between px-6 py-5">
         <button className="text-[#092634]">☰</button>
@@ -63,7 +70,7 @@ export default function NewTripPage() {
         </p>
 
         {/* Form card */}
-        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm max-w-xl mx-auto">
+        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
 
           {/* Logistics */}
           <h2 className="text-base font-semibold text-[#092634] mb-5">
@@ -158,6 +165,7 @@ export default function NewTripPage() {
             Our AI takes roughly 15 seconds to curate your bespoke journey.
           </p>
         </div>
+      </div>
       </div>
 
       {/* Floating Navbar */}
