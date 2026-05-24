@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 const messages = [
@@ -10,7 +10,7 @@ const messages = [
   "Almost ready...",
 ]
 
-export default function TripLoadingPage() {
+function LoadingContent() {
   const router = useRouter()
   const params = useSearchParams()
   const [messageIndex, setMessageIndex] = useState(0)
@@ -46,12 +46,11 @@ export default function TripLoadingPage() {
 
   return (
     <div className="min-h-screen bg-[#092634] flex flex-col items-center justify-center">
-      {/* Animated orb */}
       <div className="relative mb-12">
         <div className="w-32 h-32 rounded-full bg-[#FF6E42]/20 animate-ping absolute inset-0" />
         <div className="w-32 h-32 rounded-full bg-[#FF6E42]/30 animate-pulse absolute inset-0" />
         <div className="w-32 h-32 rounded-full bg-[#FF6E42]/10 flex items-center justify-center relative">
-          <span className="text-4xl">✦</span>
+          <span className="text-4xl text-white">✦</span>
         </div>
       </div>
 
@@ -65,5 +64,13 @@ export default function TripLoadingPage() {
         {messages[messageIndex]}
       </p>
     </div>
+  )
+}
+
+export default function TripLoadingPage() {
+  return (
+    <Suspense>
+      <LoadingContent />
+    </Suspense>
   )
 }
