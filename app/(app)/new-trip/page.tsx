@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -23,7 +23,7 @@ export default function NewTripPage() {
 
   useEffect(() => {
     if (editId) {
-      fetch(`/api/trip/${editId}`)
+      fetch("/api/trip/" + editId)
         .then(res => res.json())
         .then(data => {
           setDestination(data.destination || "")
@@ -45,15 +45,14 @@ export default function NewTripPage() {
   async function handleGenerate() {
     if (!destination || !days || !budget) return
     setLoading(true)
-    router.push(`/trip/loading?destination=${destination}&days=${days}&budget=${budget}&interests=${selectedInterests.join(",")}`)
+    router.push("/trip/loading?destination=" + destination + "&days=" + days + "&budget=" + budget + "&interests=" + selectedInterests.join(","))
   }
 
   return (
     <div className="min-h-screen bg-[#F9F9F9] pb-32">
       <div className="max-w-lg mx-auto">
-      {/* Header */}
       <header className="flex items-center justify-between px-6 py-5">
-        <button className="text-[#092634]">☰</button>
+        <button className="text-[#092634]">â˜°</button>
         <span className="text-[#092634] text-sm tracking-widest uppercase">
           Voyager AI
         </span>
@@ -61,7 +60,6 @@ export default function NewTripPage() {
       </header>
 
       <div className="px-6 mt-4">
-        {/* Title */}
         <h1 className="text-4xl font-bold text-[#092634] text-center mb-2">
           Curate Your Journey
         </h1>
@@ -69,21 +67,17 @@ export default function NewTripPage() {
           Provide a few details, and our AI concierge will craft a deeply personalized itinerary tailored to your unique tastes.
         </p>
 
-        {/* Form card */}
         <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
-
-          {/* Logistics */}
           <h2 className="text-base font-semibold text-[#092634] mb-5">
             Logistics
           </h2>
 
-          {/* Destination */}
           <div className="mb-4">
             <label className="text-xs text-gray-400 mb-1 block">
               Primary Destination
             </label>
             <div className="flex items-center border border-gray-200 rounded-xl px-4 py-3 gap-2">
-              <span className="text-gray-300">⊕</span>
+              <span className="text-gray-300">âŠ•</span>
               <input
                 type="text"
                 placeholder="e.g. Kyoto, Japan or Amalfi Coast"
@@ -94,14 +88,13 @@ export default function NewTripPage() {
             </div>
           </div>
 
-          {/* Days + Budget */}
           <div className="flex gap-3 mb-8">
             <div className="flex-1">
               <label className="text-xs text-gray-400 mb-1 block">
                 Duration (Days)
               </label>
               <div className="flex items-center border border-gray-200 rounded-xl px-4 py-3 gap-2">
-                <span className="text-gray-300">📅</span>
+                <span className="text-gray-300">ðŸ“…</span>
                 <input
                   type="number"
                   placeholder="7"
@@ -129,7 +122,6 @@ export default function NewTripPage() {
             </div>
           </div>
 
-          {/* Interests */}
           <h2 className="text-base font-semibold text-[#092634] mb-2">
             Interests & Vibe
           </h2>
@@ -141,11 +133,7 @@ export default function NewTripPage() {
               <button
                 key={interest}
                 onClick={() => toggleInterest(interest)}
-                className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                  selectedInterests.includes(interest)
-                    ? "bg-[#FF6E42] text-white"
-                    : "border border-gray-200 text-[#092634] hover:border-[#FF6E42]"
-                }`}>
+                className={selectedInterests.includes(interest) ? "bg-[#FF6E42] text-white rounded-full px-4 py-2 text-sm transition-colors" : "border border-gray-200 text-[#092634] hover:border-[#FF6E42] rounded-full px-4 py-2 text-sm transition-colors"}>
                 {interest}
               </button>
             ))}
@@ -154,12 +142,11 @@ export default function NewTripPage() {
             </button>
           </div>
 
-          {/* Generate button */}
           <button
             onClick={handleGenerate}
             disabled={!destination || !days || !budget || loading}
             className="w-full bg-[#FF6E42] text-white rounded-full py-4 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#e85e35] transition-colors disabled:opacity-50">
-            ✦ Generate Itinerary
+            âœ¦ Generate Itinerary
           </button>
           <p className="text-center text-xs text-gray-400 mt-3">
             Our AI takes roughly 15 seconds to curate your bespoke journey.
@@ -167,24 +154,8 @@ export default function NewTripPage() {
         </div>
       </div>
       </div>
-
-      {/* Floating Navbar */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-8 shadow-lg border border-gray-100">
-        {[
-          { icon: "⊕", label: "Explore", href: "/" },
-          { icon: "✈", label: "Trips", href: "/dashboard" },
-          { icon: "♡", label: "Saved", href: "/saved" },
-          { icon: "◎", label: "Profile", href: "/profile" },
-        ].map((item) => (
-          <a key={item.label} href={item.href}
-            className="flex flex-col items-center gap-1">
-            <span className="text-lg text-gray-400">{item.icon}</span>
-            <span className="text-[10px] text-gray-400">
-              {item.label}
-            </span>
-          </a>
-        ))}
-      </nav>
     </div>
   )
 }
+
+

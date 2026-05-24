@@ -1,8 +1,9 @@
-import { prisma } from "@/lib/prisma"
+﻿import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import ConfirmButton from "./confirm-button"
+import Header from "@/app/components/Header"
 
 export default async function TripPage({
   params,
@@ -25,30 +26,14 @@ export default async function TripPage({
 
   const days = Array.from({ length: trip.days }, (_, i) => i + 1)
 
-  const unsplashRes = await fetch(
-    `https://api.unsplash.com/photos/random?query=${encodeURIComponent(trip.destination)}+landmark&orientation=landscape&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
-  )
-  const unsplashData = await unsplashRes.json()
-  const heroImage =
-    unsplashData?.urls?.regular ||
-    "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800"
-
   return (
     <div className="min-h-screen bg-[#F9F9F9] pb-32">
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-5">
-        <button className="text-[#092634]">☰</button>
-        <span className="text-[#092634] text-sm tracking-widest uppercase">
-          Voyager AI
-        </span>
-        <div className="w-8 h-8 rounded-full bg-[#092634]" />
-      </header>
+      <Header userName={session.user?.name || ""} />
 
       <div className="px-6 max-w-2xl mx-auto">
         <Link
           href="/dashboard"
-          className="text-sm text-gray-400 flex items-center gap-1 mb-6 hover:text-[#092634]"
-        >
+          className="text-sm text-gray-400 flex items-center gap-1 mb-6 hover:text-[#092634]">
           ← Back to Planner
         </Link>
 
@@ -198,33 +183,6 @@ export default async function TripPage({
           <ConfirmButton tripId={id} />
         </div>
       </div>
-
-      {/* Floating Navbar */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-8 shadow-lg border border-gray-100">
-        {[
-          { icon: "⊕", label: "Explore", href: "/" },
-          { icon: "✈", label: "Trips", href: "/dashboard", active: true },
-          { icon: "♡", label: "Saved", href: "/saved" },
-          { icon: "◎", label: "Profile", href: "/profile" },
-        ].map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className="flex flex-col items-center gap-1"
-          >
-            <span
-              className={`text-lg ${item.active ? "text-[#FF6E42]" : "text-gray-400"}`}
-            >
-              {item.icon}
-            </span>
-            <span
-              className={`text-[10px] ${item.active ? "text-[#FF6E42] font-medium" : "text-gray-400"}`}
-            >
-              {item.label}
-            </span>
-          </Link>
-        ))}
-      </nav>
     </div>
   )
 }
