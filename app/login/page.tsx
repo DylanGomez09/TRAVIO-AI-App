@@ -1,0 +1,130 @@
+"use client"
+
+import Link from "next/link"
+import { signIn } from "next-auth/react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+
+export default function LoginPage() {
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
+
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    })
+
+    if (res?.error) {
+      setError("Email o contraseña incorrectos")
+      setLoading(false)
+      return
+    }
+
+    router.push("/dashboard")
+  }
+
+  return (
+    <div className="min-h-screen bg-[#F9F9F9] flex flex-col">
+      <header className="py-6 flex justify-center">
+        <span className="text-[#092634] text-xl tracking-widest uppercase">
+          Voyager AI
+        </span>
+      </header>
+
+      <div className="flex-1 flex items-center justify-center px-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 w-full max-w-md">
+          <h1 className="text-2xl font-semibold text-[#092634] text-center mb-8">
+            Welcome Back
+          </h1>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-[#092634]">
+                Email
+              </label>
+              <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2 gap-2">
+                <span className="text-gray-400">✉</span>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className="flex-1 outline-none text-sm bg-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-[#092634]">
+                Password
+              </label>
+              <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2 gap-2">
+                <span className="text-gray-400">🔒</span>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="flex-1 outline-none text-sm bg-transparent"
+                />
+              </div>
+              <div className="flex justify-end">
+                <Link href="/forgot-password"
+                  className="text-xs text-[#092634] hover:underline">
+                  Forgot Password?
+                </Link>
+              </div>
+            </div>
+
+            {error && (
+              <p className="text-sm text-red-500 text-center">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-[#FF6E42] text-white rounded-lg py-3 text-sm font-medium hover:bg-[#e85e35] transition-colors disabled:opacity-60">
+              {loading ? "Ingresando..." : "Log In"}
+            </button>
+          </form>
+
+          <div className="flex items-center gap-3 my-4">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400">or</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          <button
+            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+            className="w-full border border-gray-200 rounded-lg py-3 text-sm text-[#092634] flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
+            <svg width="18" height="18" viewBox="0 0 18 18">
+              <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+              <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+              <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
+              <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+            </svg>
+            Continue with Google
+          </button>
+
+          <p className="text-center text-xs text-gray-500 mt-6">
+            Don't have an account?{" "}
+            <Link href="/register" className="text-[#092634] font-medium hover:underline">
+              Sign Up
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
