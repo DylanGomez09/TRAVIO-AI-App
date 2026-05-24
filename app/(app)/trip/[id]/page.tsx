@@ -1,25 +1,31 @@
-﻿import { getCachedTrip } from "@/lib/cache"
-import { auth } from "@/auth"
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import ConfirmButton from "./confirm-button"
-import Header from "@/app/components/Header"
+﻿import { getCachedTrip } from "@/lib/cache";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import ConfirmButton from "./confirm-button";
+import Header from "@/app/components/Header";
 
 export default async function TripPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const session = await auth()
-  if (!session) redirect("/login")
+  const session = await auth();
+  if (!session) redirect("/login");
 
-  const { id } = await params
+  const { id } = await params;
 
-  const trip = await getCachedTrip(id)
+  const trip = await getCachedTrip(id);
 
-  if (!trip) redirect("/dashboard")
+  if (!trip) redirect("/dashboard");
 
-  const days = Array.from({ length: trip.days }, (_, i) => i + 1)
+  const days = Array.from({ length: trip.days }, (_, i) => i + 1);
+
+  const unsplashRes = await fetch(
+    `https://api.unsplash.com/photos/random?query=${encodeURIComponent(trip.destination)}+landmark&orientation=landscape&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
+  );
+  const unsplashData = await unsplashRes.json();
+  const heroImage = unsplashData?.urls?.regular || null;
 
   return (
     <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
@@ -28,23 +34,34 @@ export default async function TripPage({
       <div className="px-6 max-w-2xl mx-auto">
         <Link
           href="/dashboard"
-          className="text-sm text-gray-400 flex items-center gap-1 mb-6 hover:text-[#092634]">
+          className="text-sm text-gray-400 flex items-center gap-1 mb-6 hover:text-[#092634]"
+        >
           ← Back to Planner
         </Link>
 
         {/* Hero image */}
         <div className="relative rounded-2xl overflow-hidden h-52 mb-6">
-          <img
-            src={`https://api.unsplash.com/photos/random?query=${encodeURIComponent(trip.destination)}+city+landmark&orientation=landscape&client_id=${process.env.UNSPLASH_ACCESS_KEY}`}
-            alt={trip.destination}
-            className="w-full h-full object-cover"
-          />
+          {heroImage ? (
+            <img
+              src={heroImage}
+              alt={trip.destination}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-[#092634]" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-4 left-5">
-            <h1 className="text-white text-3xl font-bold">
+            <h1
+              className="text-white text-3xl font-bold"
+              style={{ fontFamily: "var(--font-literata)" }}
+            >
               {trip.destination}
             </h1>
-            <p className="text-white/70 text-sm">
+            <p
+              className="text-white/70 text-sm"
+              style={{ fontFamily: "var(--font-manrope)" }}
+            >
               Your curated experience
             </p>
           </div>
@@ -98,9 +115,7 @@ export default async function TripPage({
                   .reduce((sum, a) => sum + a.cost, 0)
                   .toLocaleString()}
               </p>
-              <p className="text-xs text-gray-400">
-                per person
-              </p>
+              <p className="text-xs text-gray-400">per person</p>
             </div>
           </div>
         </div>
@@ -114,7 +129,7 @@ export default async function TripPage({
           {days.map((day) => {
             const dayActivities = trip.activities.filter(
               (a) => a.dayNumber === day,
-            )
+            );
             return (
               <div
                 key={day}
@@ -163,7 +178,7 @@ export default async function TripPage({
                   ))}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
 
@@ -179,6 +194,5 @@ export default async function TripPage({
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,13 +1,13 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { getDestinationImage } from "@/lib/unsplash";
 import Link from "next/link";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 async function getTrendingDestinations() {
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
   const result = await model.generateContent(`
     Give me 6 trending travel destinations for 2026. 
     Respond ONLY with a JSON array, no markdown, no extra text:
@@ -21,7 +21,6 @@ async function getTrendingDestinations() {
       }
     ]
   `);
-
   const text = result.response
     .text()
     .replace(/```json|```/g, "")
@@ -46,10 +45,16 @@ export default async function ExplorePage() {
 
   const destinations = await getTrendingDestinations();
 
+  const destinationsWithImages = await Promise.all(
+    destinations.map(async (dest: any) => ({
+      ...dest,
+      image: await getDestinationImage(dest.city + " " + dest.country),
+    })),
+  );
+
   return (
     <div className="min-h-screen bg-[#F9F9F9] pb-32">
       <div className="max-w-5xl mx-auto px-6 pt-8">
-        {/* Header */}
         <div className="mb-8">
           <span
             className="text-xs text-[#FF6E42] font-medium tracking-widest uppercase"
@@ -71,26 +76,33 @@ export default async function ExplorePage() {
           </p>
         </div>
 
-        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {destinations.map((dest: any, i: number) => (
+          {destinationsWithImages.map((dest: any, i: number) => (
             <Link
               key={dest.city}
               href={`/new-trip?destination=${encodeURIComponent(dest.city + ", " + dest.country)}`}
               className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group cursor-pointer block"
             >
-              {/* Image placeholder */}
-              <div
-                className={`h-44 flex items-end p-4 relative ${
-                  i % 3 === 0
-                    ? "bg-[#092634]"
-                    : i % 3 === 1
-                      ? "bg-[#351E06]"
-                      : "bg-[#1a3a4a]"
-                }`}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="relative">
+              <div className="h-44 relative overflow-hidden">
+                {dest.image ? (
+                  <img
+                    src={dest.image}
+                    alt={dest.city}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : (
+                  <div
+                    className={`absolute inset-0 ${
+                      i % 3 === 0
+                        ? "bg-[#092634]"
+                        : i % 3 === 1
+                          ? "bg-[#351E06]"
+                          : "bg-[#1a3a4a]"
+                    }`}
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-4 left-4">
                   <h2
                     className="text-white text-xl font-bold group-hover:underline"
                     style={{ fontFamily: "var(--font-literata)" }}
@@ -106,7 +118,6 @@ export default async function ExplorePage() {
                 </div>
               </div>
 
-              {/* Content */}
               <div className="p-4">
                 <p
                   className="text-sm text-gray-500 mb-3 leading-relaxed"
@@ -114,8 +125,6 @@ export default async function ExplorePage() {
                 >
                   {dest.tagline}
                 </p>
-
-                {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-3">
                   {dest.tags?.map((tag: string) => (
                     <span
@@ -127,8 +136,6 @@ export default async function ExplorePage() {
                     </span>
                   ))}
                 </div>
-
-                {/* Best for */}
                 <div className="flex items-center justify-between">
                   <span
                     className="text-xs text-gray-400"
