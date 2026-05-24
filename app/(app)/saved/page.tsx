@@ -1,4 +1,4 @@
-import { auth } from "@/auth"
+﻿import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
@@ -15,7 +15,7 @@ export default async function SavedPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] pb-32">
+    <div className="w-max-[1200px] bg-[#F9F9F9] pb-32">
       <Header userName={session.user?.name ?? ""} />
 
       <div className="px-6 max-w-lg mx-auto">
@@ -47,3 +47,4 @@ export default async function SavedPage() {
     </div>
   )
 }
+

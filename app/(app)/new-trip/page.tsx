@@ -49,7 +49,7 @@ export default function NewTripPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] pb-32">
+    <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
       <div className="max-w-lg mx-auto">
       <header className="flex items-center justify-between px-6 py-5">
         <button className="text-[#092634]">â˜°</button>
@@ -157,5 +157,6 @@ export default function NewTripPage() {
     </div>
   )
 }
+
 
 

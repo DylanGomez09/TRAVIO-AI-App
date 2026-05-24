@@ -18,7 +18,7 @@ export default async function DashboardPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] pb-32">
+    <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
       <Header userName={session.user?.name ?? ""} />
 
       {/* Content */}
@@ -90,7 +90,7 @@ export default async function DashboardPage() {
             </div>
             <div className="flex items-center gap-3">
               <Link href="/new-trip"
-                className="bg-white text-[#092634] rounded-full px-5 py-2 text-sm font-medium hover:bg-gray-100 transition-colors">
+                className="bg-white text-[#092634] rounded-xl px-5 py-2 text-sm font-medium hover:bg-gray-100 transition-colors">
                 Explore Now
               </Link>
             </div>
@@ -126,4 +126,8 @@ export default async function DashboardPage() {
     </div>
   )
 }
+
+
+
+
 

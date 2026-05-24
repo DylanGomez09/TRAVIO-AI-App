@@ -27,7 +27,7 @@ export default async function TripPage({
   const days = Array.from({ length: trip.days }, (_, i) => i + 1)
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] pb-32">
+    <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
       <Header userName={session.user?.name || ""} />
 
       <div className="px-6 max-w-2xl mx-auto">
@@ -186,3 +186,4 @@ export default async function TripPage({
     </div>
   )
 }
+
