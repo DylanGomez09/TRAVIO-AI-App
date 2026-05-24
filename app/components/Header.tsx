@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/app/components/Navbar";
 
 const navItems = [
-  { label: "Explore", href: "/" },
+  { label: "Explore", href: "/explore" },
   { label: "Trips", href: "/dashboard" },
   { label: "Concierge", href: "/concierge" },
   { label: "Saved", href: "/saved" },
