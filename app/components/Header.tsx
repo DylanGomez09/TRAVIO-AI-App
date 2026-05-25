@@ -63,7 +63,7 @@ export default function Header() {
           <div className="flex items-center gap-4">
             <Link
               href="/new-trip"
-              className="hidden md:block border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-400 hover:text-[#092634] hover:border-[#FF6E42] transition-colors"
+              className="hidden md:block bg-[#FF6E42] text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-[#e85e35] transition-colors"
             >
               Plan Trip
             </Link>
