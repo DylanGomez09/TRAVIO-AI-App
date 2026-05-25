@@ -3,9 +3,22 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import ConfirmButton from "./confirm-button";
-import Header from "@/app/components/Header";
+import { cacheLife, cacheTag } from "next/cache";
+import { Suspense } from "react";
 
-export default async function TripPage({
+export default function TripPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <TripAuthCheck params={params} />
+    </Suspense>
+  );
+}
+
+async function TripAuthCheck({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -14,6 +27,14 @@ export default async function TripPage({
   if (!session) redirect("/login");
 
   const { id } = await params;
+
+  return <TripContent id={id} />;
+}
+
+async function TripContent({ id }: { id: string }) {
+  'use cache'
+  cacheLife({ stale: 300, revalidate: 60, expire: 3600 })
+  cacheTag("single-trip")
 
   const trip = await getCachedTrip(id);
 
@@ -29,8 +50,6 @@ export default async function TripPage({
 
   return (
     <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
-      <Header userName={session.user?.name || ""} />
-
       <div className="px-6 max-w-2xl mx-auto">
         <Link
           href="/dashboard"
@@ -39,7 +58,6 @@ export default async function TripPage({
           ← Back to Planner
         </Link>
 
-        {/* Hero image */}
         <div className="relative rounded-2xl overflow-hidden h-52 mb-6">
           {heroImage ? (
             <img
@@ -67,7 +85,6 @@ export default async function TripPage({
           </div>
         </div>
 
-        {/* Trip info */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 mb-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-start gap-3">
@@ -98,7 +115,6 @@ export default async function TripPage({
             </div>
           </div>
 
-          {/* Total */}
           <div className="border-t border-gray-100 mt-4 pt-4 flex items-center justify-between">
             <div>
               <p className="text-base font-semibold text-[#092634]">
@@ -120,7 +136,6 @@ export default async function TripPage({
           </div>
         </div>
 
-        {/* Itinerary by day */}
         <h2 className="text-lg font-semibold text-[#092634] mb-4">
           Your Itinerary
         </h2>
@@ -182,7 +197,6 @@ export default async function TripPage({
           })}
         </div>
 
-        {/* Actions */}
         <div className="flex gap-3 mt-8">
           <Link
             href={`/new-trip?edit=${id}`}

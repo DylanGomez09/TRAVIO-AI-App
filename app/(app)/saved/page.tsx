@@ -4,12 +4,29 @@ import { getCachedUserTrips } from "@/lib/cache";
 import { getDestinationImage } from "@/lib/unsplash";
 import Link from "next/link";
 import TripCard from "@/app/components/TripCard";
+import { cacheLife, cacheTag } from "next/cache";
+import { Suspense } from "react";
 
-export default async function SavedPage() {
+export default function SavedPage() {
+  return (
+    <Suspense fallback={null}>
+      <SavedAuthCheck />
+    </Suspense>
+  );
+}
+
+async function SavedAuthCheck() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
+  return <SavedContent userId={session.user.id} />;
+}
 
-  const trips = await getCachedUserTrips(session.user.id);
+async function SavedContent({ userId }: { userId: string }) {
+  'use cache'
+  cacheLife({ stale: 300, revalidate: 60, expire: 3600 })
+  cacheTag("user-trips")
+
+  const trips = await getCachedUserTrips(userId);
 
   const tripsWithImages = await Promise.all(
     trips.map(async (trip) => ({
@@ -19,7 +36,7 @@ export default async function SavedPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] pb-32">
+    <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
       <div className="max-w-2xl mx-auto px-6 pt-8">
         <h1
           className="text-3xl font-bold text-[#092634] mb-1"

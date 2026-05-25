@@ -3,10 +3,16 @@ import { redirect } from "next/navigation";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getDestinationImage } from "@/lib/unsplash";
 import Link from "next/link";
+import { cacheLife, cacheTag } from "next/cache";
+import { Suspense } from "react";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 async function getTrendingDestinations() {
+  'use cache'
+  cacheLife('hours')
+  cacheTag('trending')
+
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
   const result = await model.generateContent(`
     Give me 6 trending travel destinations for 2026. 
@@ -39,9 +45,24 @@ const tagColors: Record<string, string> = {
   history: "bg-stone-100 text-stone-600",
 };
 
-export default async function ExplorePage() {
+export default function ExplorePage() {
+  return (
+    <Suspense fallback={null}>
+      <ExploreAuthCheck />
+    </Suspense>
+  );
+}
+
+async function ExploreAuthCheck() {
   const session = await auth();
   if (!session) redirect("/login");
+  return <ExploreContent />;
+}
+
+async function ExploreContent() {
+  'use cache'
+  cacheLife('hours')
+  cacheTag('explore')
 
   const destinations = await getTrendingDestinations();
 
@@ -53,7 +74,7 @@ export default async function ExplorePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] pb-32">
+    <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
       <div className="max-w-5xl mx-auto px-6 pt-8">
         <div className="mb-8">
           <span

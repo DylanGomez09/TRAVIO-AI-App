@@ -2,17 +2,32 @@
 import { redirect } from "next/navigation";
 import { getCachedUserTrips } from "@/lib/cache";
 import Link from "next/link";
-import Header from "@/app/components/Header";
 import TripCard from "@/app/components/TripCard";
 import { getDestinationImage } from "@/lib/unsplash";
+import { cacheLife, cacheTag } from "next/cache";
+import { Suspense } from "react";
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={null}>
+      <DashboardAuthCheck />
+    </Suspense>
+  );
+}
+
+async function DashboardAuthCheck() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
+  return <DashboardContent userId={session.user.id} userName={session.user?.name ?? ""} />;
+}
 
-  const firstName = session.user?.name?.split(" ")[0] || "Traveler";
+async function DashboardContent({ userId, userName }: { userId: string; userName: string }) {
+  'use cache'
+  cacheLife({ stale: 300, revalidate: 60, expire: 3600 })
+  cacheTag("user-trips")
 
-  const trips = await getCachedUserTrips(session.user.id);
+  const firstName = userName.split(" ")[0] || "Traveler";
+  const trips = await getCachedUserTrips(userId);
 
   const tripsWithImages = await Promise.all(
     trips.map(async (trip) => ({
@@ -23,17 +38,12 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
-      <Header userName={session.user?.name ?? ""} />
-
-      {/* Content */}
       <div className="max-w-5xl mx-auto px-8 py-8">
-        {/* Welcome */}
         <p className="text-sm text-gray-400 mb-1">Welcome back, {firstName}</p>
         <h1 className="text-4xl font-bold text-[#092634] mb-8">
           Your next journey awaits
         </h1>
 
-        {/* Saved Trips */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-[#092634]">Saved Trips</h2>
           <Link
@@ -51,7 +61,7 @@ export default async function DashboardPage() {
               href="/new-trip"
               className="text-sm text-[#FF6E42] font-medium hover:underline"
             >
-              Plan your first trip ?
+              Plan your first trip →
             </Link>
           </div>
         ) : (
@@ -70,9 +80,7 @@ export default async function DashboardPage() {
           </div>
         )}
 
-        {/* Bottom row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* AI Recommendation */}
           <div className="bg-[#092634] rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <p className="text-[#FF6E42] text-xs font-semibold tracking-widest uppercase mb-3">
@@ -103,7 +111,6 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          {/* Concierge Pulse */}
           <div className="bg-white rounded-2xl border border-gray-100 p-6">
             <h3 className="text-base font-semibold text-[#092634] mb-4">
               Concierge Pulse

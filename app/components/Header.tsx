@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 import Navbar from "@/app/components/Navbar";
 
 const navItems = [
@@ -12,7 +13,9 @@ const navItems = [
   { label: "Saved", href: "/saved" },
 ];
 
-export default function Header({ userName }: { userName: string }) {
+export default function Header() {
+  const { data: session } = useSession();
+  const userName = session?.user?.name || "Traveler";
   const firstName = userName.split(" ")[0];
   const pathname = usePathname();
 

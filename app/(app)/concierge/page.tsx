@@ -56,7 +56,7 @@ export default function ConciergePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] flex flex-col">
+    <div className="min-h-screen bg-[#F9F9F9] flex flex-col pt-20">
       {/* Title */}
       <div className="px-6 pt-8 pb-4 max-w-2xl mx-auto w-full">
         <h1

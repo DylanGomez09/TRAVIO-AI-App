@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { useState, useEffect } from "react"
+import { Suspense, useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 const interests = ["Culture", "Culinary", "Wellness & Spa", "Adventure", "Architecture", "Seclusion"]
@@ -12,6 +12,14 @@ const budgetTiers = [
 ]
 
 export default function NewTripPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32" />}>
+      <NewTripForm />
+    </Suspense>
+  )
+}
+
+function NewTripForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const editId = searchParams.get("edit")
@@ -51,13 +59,6 @@ export default function NewTripPage() {
   return (
     <div className="min-h-screen bg-[#F9F9F9] pt-20 pb-32">
       <div className="max-w-lg mx-auto">
-      <header className="flex items-center justify-between px-6 py-5">
-        <button className="text-[#092634]">â˜°</button>
-        <span className="text-[#092634] text-sm tracking-widest uppercase">
-          Voyager AI
-        </span>
-        <div className="w-8 h-8 rounded-full bg-[#092634]" />
-      </header>
 
       <div className="px-6 mt-4">
         <h1 className="text-4xl font-bold text-[#092634] text-center mb-2">
