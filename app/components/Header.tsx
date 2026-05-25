@@ -19,6 +19,8 @@ export default function Header() {
   const firstName = userName.split(" ")[0];
   const pathname = usePathname();
 
+  if (pathname === "/trip/loading") return null;
+
   return (
     <>
       <header className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
@@ -65,11 +67,14 @@ export default function Header() {
             >
               Plan Trip
             </Link>
-            <div className="w-8 h-8 rounded-full bg-[#092634] flex items-center justify-center">
+            <Link
+              href="/profile"
+              className="w-8 h-8 rounded-full bg-[#092634] flex items-center justify-center hover:opacity-80 transition-opacity"
+            >
               <span className="text-white text-xs font-medium">
                 {firstName[0]}
               </span>
-            </div>
+            </Link>
           </div>
         </div>
 
