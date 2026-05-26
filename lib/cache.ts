@@ -1,10 +1,15 @@
 ﻿import { cacheLife, cacheTag } from "next/cache"
 import { prisma } from "./prisma"
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import type { Trip, Prisma } from "@prisma/client"
+
+type TripWithActivities = Prisma.TripGetPayload<{
+  include: { activities: true }
+}>
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
-export async function getCachedUserTrips(userId: string) {
+export async function getCachedUserTrips(userId: string): Promise<Trip[]> {
   'use cache'
   cacheLife({ stale: 300, revalidate: 60, expire: 3600 })
   cacheTag("user-trips")
@@ -15,7 +20,7 @@ export async function getCachedUserTrips(userId: string) {
   })
 }
 
-export async function getCachedTrip(id: string) {
+export async function getCachedTrip(id: string): Promise<TripWithActivities | null> {
   'use cache'
   cacheLife({ stale: 300, revalidate: 60, expire: 3600 })
   cacheTag("single-trip")
