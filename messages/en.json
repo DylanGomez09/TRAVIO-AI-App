@@ -191,6 +191,55 @@
   "common": {
     "loading": "Loading..."
   },
+  "seo": {
+    "siteName": "Travio AI",
+    "defaultTitle": "Travio AI — Smart Travel, Zero Stress",
+    "defaultDescription": "Your personal AI travel concierge. Discover curated itineraries, smart recommendations, and zero-stress travel planning powered by artificial intelligence.",
+    "home": {
+      "title": "Smart Travel, Zero Stress",
+      "description": "Experience the world with unparalleled precision. Your AI travel concierge designs bespoke itineraries tailored to you."
+    },
+    "login": {
+      "title": "Sign In",
+      "description": "Sign in to your Travio AI account to access your trips, saved destinations, and personal concierge."
+    },
+    "register": {
+      "title": "Create Account",
+      "description": "Create your Travio AI account and start planning personalized trips with your AI travel concierge."
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "description": "Reset your Travio AI account password and regain access to your travel plans."
+    },
+    "resetPassword": {
+      "title": "Set New Password",
+      "description": "Set a new password for your Travio AI account."
+    },
+    "explore": {
+      "title": "Explore Destinations",
+      "description": "Discover AI-curated travel destinations. Trending cities, hidden gems, and personalized recommendations for your next journey."
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Your Travio AI dashboard — manage saved trips, view recommendations, and plan your next adventure."
+    },
+    "saved": {
+      "title": "Saved Trips",
+      "description": "View your saved itineraries and curated travel experiences on Travio AI."
+    },
+    "concierge": {
+      "title": "AI Concierge",
+      "description": "Chat with your personal AI travel concierge. Get recommendations, improve itineraries, and discover new destinations."
+    },
+    "newTrip": {
+      "title": "Plan a Trip",
+      "description": "Plan a new AI-curated trip. Tell us your destination, duration, budget, and interests for a personalized itinerary."
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your Travio AI profile, travel preferences, and account settings."
+    }
+  },
   "footer": {
     "brand": "Travio AI",
     "description": "Your personal AI travel concierge. Discovering the world, curated specifically for you.",

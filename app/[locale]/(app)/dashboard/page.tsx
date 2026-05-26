@@ -5,10 +5,24 @@ import { Link } from "@/i18n/navigation";
 import TripCard from "@/app/components/TripCard";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 import {
   WelcomeSkeleton,
   TripsGridSkeleton,
 } from "@/app/components/DashboardSkeleton";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "seo" })
+  return {
+    title: t("dashboard.title"),
+    description: t("dashboard.description"),
+  }
+}
 
 export default function DashboardPage() {
   return (

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 import { getTrendingDestinations } from "@/lib/cache";
 import LazyTripImage from "@/app/components/LazyTripImage";
 import {
@@ -21,6 +22,19 @@ const tagColors: Record<string, string> = {
   beaches: "bg-cyan-50 text-cyan-600",
   history: "bg-stone-100 text-stone-600",
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "seo" })
+  return {
+    title: t("explore.title"),
+    description: t("explore.description"),
+  }
+}
 
 export default function ExplorePage() {
   return (

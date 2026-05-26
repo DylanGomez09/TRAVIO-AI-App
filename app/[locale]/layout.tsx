@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Literata, Manrope } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl"
-import { getMessages, setRequestLocale } from "next-intl/server"
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server"
 import { routing } from "@/i18n/routing"
 import Footer from "@/app/components/Footer"
 import "../globals.css"
@@ -20,10 +20,34 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "seo" })
+
   return {
-    title: "Travio",
-    description: "Smart Travel, Zero Stress",
+    title: t("defaultTitle"),
+    description: t("defaultDescription"),
+    alternates: {
+      canonical: "/",
+      languages: {
+        en: "/en",
+        es: "/es",
+      },
+    },
+    openGraph: {
+      locale: locale === "es" ? "es_ES" : "en_US",
+      title: t("defaultTitle"),
+      description: t("defaultDescription"),
+      siteName: t("siteName"),
+    },
+    twitter: {
+      title: t("defaultTitle"),
+      description: t("defaultDescription"),
+    },
   }
 }
 
@@ -38,10 +62,25 @@ export default async function LocaleLayout({
   setRequestLocale(locale)
 
   const messages = await getMessages()
+  const t = await getTranslations({ locale, namespace: "seo" })
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Travio AI",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    description: t("defaultDescription"),
+    knowsAbout: "AI-powered travel planning and personalized itineraries",
+    slogan: "Smart Travel, Zero Stress",
+  }
 
   return (
     <html lang={locale}>
       <body className={`${literata.variable} ${manrope.variable}`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <NextIntlClientProvider messages={messages}>
           <div className="flex flex-col min-h-screen">
             {children}

@@ -191,6 +191,55 @@
   "common": {
     "loading": "Cargando..."
   },
+  "seo": {
+    "siteName": "Travio AI",
+    "defaultTitle": "Travio AI — Viaje Inteligente, Estrés Cero",
+    "defaultDescription": "Tu conserje de viajes IA personal. Descubre itinerarios seleccionados, recomendaciones inteligentes y planificación de viajes sin estrés impulsada por inteligencia artificial.",
+    "home": {
+      "title": "Viaje Inteligente, Estrés Cero",
+      "description": "Experimenta el mundo con precisión inigualable. Tu conserje IA diseña itinerarios personalizados adaptados a ti."
+    },
+    "login": {
+      "title": "Iniciar Sesión",
+      "description": "Inicia sesión en tu cuenta de Travio AI para acceder a tus viajes, destinos guardados y conserje personal."
+    },
+    "register": {
+      "title": "Crear Cuenta",
+      "description": "Crea tu cuenta de Travio AI y comienza a planificar viajes personalizados con tu conserje de viajes IA."
+    },
+    "forgotPassword": {
+      "title": "Restablecer Contraseña",
+      "description": "Restablece la contraseña de tu cuenta Travio AI y recupera el acceso a tus planes de viaje."
+    },
+    "resetPassword": {
+      "title": "Nueva Contraseña",
+      "description": "Establece una nueva contraseña para tu cuenta de Travio AI."
+    },
+    "explore": {
+      "title": "Explorar Destinos",
+      "description": "Descubre destinos de viaje seleccionados por IA. Ciudades trending, joyas ocultas y recomendaciones personalizadas para tu próximo viaje."
+    },
+    "dashboard": {
+      "title": "Panel",
+      "description": "Tu panel de Travio AI — gestiona viajes guardados, mira recomendaciones y planifica tu próxima aventura."
+    },
+    "saved": {
+      "title": "Viajes Guardados",
+      "description": "Ve tus itinerarios guardados y experiencias de viaje seleccionadas en Travio AI."
+    },
+    "concierge": {
+      "title": "Conserje IA",
+      "description": "Chatea con tu conserje de viajes IA personal. Obtén recomendaciones, mejora itinerarios y descubre nuevos destinos."
+    },
+    "newTrip": {
+      "title": "Planificar Viaje",
+      "description": "Planifica un nuevo viaje seleccionado por IA. Cuéntanos tu destino, duración, presupuesto e intereses para un itinerario personalizado."
+    },
+    "profile": {
+      "title": "Perfil",
+      "description": "Gestiona tu perfil de Travio AI, preferencias de viaje y configuración de cuenta."
+    }
+  },
   "footer": {
     "brand": "Travio AI",
     "description": "Tu conserje de viajes IA personal. Descubriendo el mundo, seleccionado especialmente para ti.",
