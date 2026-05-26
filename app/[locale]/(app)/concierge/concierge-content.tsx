@@ -129,7 +129,7 @@ export default function ConciergeContent() {
       </div>
 
       {/* Input area */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#F9F9F9] border-t border-gray-100 px-6 py-4 md:pb-6">
+      <div className="fixed bottom-24 md:bottom-0 left-0 right-0 bg-[#F9F9F9] border-t border-gray-100 px-6 py-4">
         <div className="max-w-2xl mx-auto">
           {/* Suggestions */}
           {messages.length === 1 && (
