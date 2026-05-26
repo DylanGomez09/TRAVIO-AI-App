@@ -1,48 +1,15 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Link } from "@/i18n/navigation";
-import { cacheLife, cacheTag } from "next/cache";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
+import { getTrendingDestinations } from "@/lib/cache";
 import LazyTripImage from "@/app/components/LazyTripImage";
 import {
   ExploreHeaderSkeleton,
   DestinationsGridSkeleton,
   ExplorePageSkeleton,
 } from "@/app/components/ExploreSkeleton";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-
-async function getTrendingDestinations() {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("trending");
-
-  try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-    const result = await model.generateContent(`
-      Give me 6 trending travel destinations for 2026. 
-      Respond ONLY with a JSON array, no markdown, no extra text:
-      [
-        {
-          "city": "City name",
-          "country": "Country",
-          "tagline": "One short inspiring sentence",
-          "tags": ["tag1", "tag2"],
-          "bestFor": "Type of traveler"
-        }
-      ]
-    `);
-    const text = result.response
-      .text()
-      .replace(/```json|```/g, "")
-      .trim();
-    return JSON.parse(text);
-  } catch {
-    return [];
-  }
-}
 
 const tagColors: Record<string, string> = {
   culture: "bg-blue-50 text-blue-600",
