@@ -1,4 +1,5 @@
 ﻿import { getCachedTrip } from "@/lib/cache";
+import type { TripWithActivities } from "@/lib/cache";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
@@ -33,7 +34,7 @@ async function TripAuthCheck({
 
 async function TripContent({ id }: { id: string }) {
   const t = await getTranslations("trip");
-  const trip = await getCachedTrip(id);
+  const trip: TripWithActivities | null = await getCachedTrip(id);
 
   if (!trip) redirect("/dashboard");
 

@@ -3,7 +3,7 @@ import { prisma } from "./prisma"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import type { Trip, Prisma } from "@prisma/client"
 
-type TripWithActivities = Prisma.TripGetPayload<{
+export type TripWithActivities = Prisma.TripGetPayload<{
   include: { activities: true }
 }>
 
