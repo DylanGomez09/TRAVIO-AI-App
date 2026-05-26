@@ -195,7 +195,7 @@ travio/
 | `DIRECT_URL` | Direct database connection (migrations) | ✅ |
 | `AUTH_GOOGLE_ID` | Google OAuth client ID | ✅ |
 | `AUTH_GOOGLE_SECRET` | Google OAuth client secret | ✅ |
-| `NEXTAUTH_URL` | App URL (`http://localhost:3000`) | ✅ |
+| `NEXTAUTH_URL` | App URL (`http://localhost:3000` en dev, `https://tudominio.vercel.app` en prod) | ✅ |
 | `AUTH_SECRET` | NextAuth encryption secret | ✅ |
 | `GEMINI_API_KEY` | Google Gemini API key | ✅ |
 | `UNSPLASH_ACCESS_KEY` | Unsplash API access key | ✅ |
