@@ -28,10 +28,10 @@ export default function LandingContent() {
             </Link>
             <Link
               href="/login"
-              className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full text-sm text-[#092634] hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 p-2 md:px-4 md:py-2 border border-gray-200 rounded-full text-sm text-[#092634] hover:bg-gray-50 transition-colors"
             >
               <span className="text-xl">👤</span>
-              <span>{loginT("submit")}</span>
+              <span className="hidden md:inline">{loginT("submit")}</span>
             </Link>
           </div>
         </div>

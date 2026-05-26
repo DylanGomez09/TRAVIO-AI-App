@@ -40,9 +40,9 @@ export default function Footer() {
     <footer className="bg-[#f9f9f9] mt-auto">
       <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Upper */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 text-center md:text-left">
           {/* Brand */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 flex flex-col items-center md:items-start">
             <span className="text-[#092634] text-lg font-semibold tracking-wider">
               {t("brand")}
             </span>
@@ -52,11 +52,11 @@ export default function Footer() {
           </div>
 
           {/* Explore */}
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <h4 className="text-[#092634] text-sm font-semibold mb-4 uppercase tracking-wider">
               {t("exploreTitle")}
             </h4>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 items-center md:items-start">
               <a href={`/${locale}/explore`} className={linkClass}>
                 {t("destinations")}
               </a>
@@ -68,11 +68,11 @@ export default function Footer() {
           </div>
 
           {/* Support */}
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <h4 className="text-[#092634] text-sm font-semibold mb-4 uppercase tracking-wider">
               {t("supportTitle")}
             </h4>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 items-center md:items-start">
               <span className={linkClass}>{t("helpCenter")}</span>
               <span className={linkClass}>{t("contactUs")}</span>
               <span className={linkClass}>{t("privacy")}</span>
@@ -84,8 +84,8 @@ export default function Footer() {
         <div className="border-t border-gray-200 my-8" />
 
         {/* Lower */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
-          <div className="flex items-center gap-5">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-5">
             <GlobeIcon />
             <ChatIcon />
             <BriefcaseIcon />
