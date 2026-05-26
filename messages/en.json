@@ -25,6 +25,7 @@
   "navbar": {
     "explore": "Explore",
     "trips": "Trips",
+    "concierge": "Concierge",
     "saved": "Saved",
     "profile": "Profile"
   },

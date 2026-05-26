@@ -9,14 +9,15 @@ export default function Navbar() {
   const t = useTranslations("navbar")
 
   const items = [
-    { icon: "⊕", label: t("explore"), href: "/" },
+    { icon: "⊕", label: t("explore"), href: "/explore" },
     { icon: "✈", label: t("trips"), href: "/dashboard" },
+    { icon: "✦", label: t("concierge"), href: "/concierge" },
     { icon: "♡", label: t("saved"), href: "/saved" },
     { icon: "◎", label: t("profile"), href: "/profile" },
   ]
 
   return (
-    <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-8 shadow-lg border border-gray-100 z-50">
+    <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md rounded-full px-4 py-3 flex items-center gap-4 shadow-lg border border-gray-100 z-50">
       {items.map((item) => {
         const active = pathname === item.href
         return (

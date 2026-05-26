@@ -25,6 +25,7 @@
   "navbar": {
     "explore": "Explorar",
     "trips": "Viajes",
+    "concierge": "Conserje",
     "saved": "Guardados",
     "profile": "Perfil"
   },
