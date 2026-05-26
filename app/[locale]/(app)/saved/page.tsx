@@ -4,6 +4,7 @@ import { getCachedUserTrips } from "@/lib/cache";
 import { getDestinationImage } from "@/lib/unsplash";
 import { Link } from "@/i18n/navigation";
 import TripCard from "@/app/components/TripCard";
+import { SavedSkeleton } from "@/app/components/SavedSkeleton";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
@@ -23,7 +24,7 @@ export async function generateMetadata({
 
 export default function SavedPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<SavedSkeleton />}>
       <SavedAuthCheck />
     </Suspense>
   );
