@@ -44,28 +44,28 @@ export default function LandingContent() {
           className="flex-1 flex flex-col justify-center py-8 min-w-0"
           style={{ paddingLeft: "max(2rem, calc((100vw - 1200px) / 2 + 2rem))", paddingRight: "2rem" }}
         >
-          <span className="inline-flex items-center gap-2 text-xs text-[#092634] border border-gray-200 rounded-full px-3 py-1 w-fit mb-6">
+          <span className="inline-flex items-center gap-2 text-xs text-[#092634] border border-gray-200 rounded-full px-3 py-1 w-fit mx-auto md:mx-0 mb-6">
             {t("badge")}
           </span>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#092634] leading-none mb-1">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#092634] leading-none mb-1 text-center md:text-left">
             {t("title1")}
           </h1>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#FF6E42] leading-none mb-6 md:mb-8">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#FF6E42] leading-none mb-6 md:mb-8 text-center md:text-left">
             {t("title2")}
           </h1>
 
-          <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-md">
+          <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-md text-center md:text-left">
             {t("subtitle")}
           </p>
 
           <Link href="/register"
-            className="inline-flex items-center gap-2 bg-[#FF6E42] text-white rounded-full px-6 py-3 text-sm font-medium hover:bg-[#e85e35] transition-colors w-fit">
+            className="inline-flex items-center gap-2 bg-[#FF6E42] text-white rounded-full px-6 py-3 text-sm font-medium hover:bg-[#e85e35] transition-colors w-fit mx-auto md:mx-0">
             {t("cta")}
           </Link>
 
           {/* Stats */}
-          <div className="flex flex-wrap gap-x-8 gap-y-2 mt-10 md:mt-12">
+          <div className="flex flex-wrap gap-x-8 gap-y-2 mt-10 md:mt-12 justify-center md:justify-start">
             <div>
               <p className="text-xl font-semibold text-[#092634]">10k+</p>
               <p className="text-xs text-gray-400">{t("stat1")}</p>
