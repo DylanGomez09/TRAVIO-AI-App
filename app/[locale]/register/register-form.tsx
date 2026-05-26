@@ -34,11 +34,19 @@ export default function RegisterForm() {
       return
     }
 
-    await signIn("credentials", {
+    const signInRes = await signIn("credentials", {
       email,
       password,
-      callbackUrl: "/dashboard",
+      redirect: false,
     })
+
+    if (signInRes?.error) {
+      setError("Error al iniciar sesión automáticamente. Intenta iniciar sesión manualmente.")
+      setLoading(false)
+      return
+    }
+
+    router.push("/dashboard")
   }
 
   return (

@@ -26,7 +26,13 @@ export default function LoginForm() {
     })
 
     if (res?.error) {
-      setError("Email o contraseña incorrectos")
+      const errorMessages: Record<string, string> = {
+        CredentialsSignin: "Email o contraseña incorrectos",
+        MissingCSRF: "Error de sesión. Recarga la página e inténtalo de nuevo.",
+        AccessDenied: "Acceso denegado",
+        Configuration: "Error de configuración del servidor.",
+      }
+      setError(errorMessages[res.error] || `Error: ${res.error}`)
       setLoading(false)
       return
     }
