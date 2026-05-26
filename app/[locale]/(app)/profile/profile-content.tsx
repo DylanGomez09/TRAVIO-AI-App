@@ -1,12 +1,10 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 export default function ProfileContent() {
   const { data: session } = useSession();
-  const router = useRouter();
   const t = useTranslations("profile");
 
   const menuItems = [
@@ -22,7 +20,7 @@ export default function ProfileContent() {
 
   async function handleLogout() {
     await signOut({ redirect: false });
-    router.push("/login");
+    window.location.href = "/";
   }
 
   return (
