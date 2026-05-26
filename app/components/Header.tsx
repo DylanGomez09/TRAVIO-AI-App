@@ -1,23 +1,26 @@
 ﻿"use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import { useTranslations, useLocale } from "next-intl";
 import Navbar from "@/app/components/Navbar";
-
-const navItems = [
-  { label: "Explore", href: "/explore" },
-  { label: "Trips", href: "/dashboard" },
-  { label: "Concierge", href: "/concierge" },
-  { label: "Saved", href: "/saved" },
-];
 
 export default function Header() {
   const { data: session } = useSession();
   const userName = session?.user?.name || "Traveler";
   const firstName = userName.split(" ")[0];
   const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations("header");
+  const otherLocale = locale === "en" ? "es" : "en";
+
+  const navItems = [
+    { label: t("explore"), href: "/explore" },
+    { label: t("trips"), href: "/dashboard" },
+    { label: t("concierge"), href: "/concierge" },
+    { label: t("saved"), href: "/saved" },
+  ];
 
   if (pathname === "/trip/loading") return null;
 
@@ -26,7 +29,7 @@ export default function Header() {
       <header className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <span className="text-[#092634] text-base font-semibold tracking-wider">
-            Travio AI
+            {t("brand")}
           </span>
 
           <nav className="hidden md:flex items-center gap-1 relative">
@@ -65,7 +68,14 @@ export default function Header() {
               href="/new-trip"
               className="hidden md:block bg-[#FF6E42] text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-[#e85e35] transition-colors"
             >
-              Plan Trip
+              {t("planTrip")}
+            </Link>
+            <Link
+              href={pathname}
+              locale={otherLocale}
+              className="text-xs font-medium text-gray-400 hover:text-[#092634] transition-colors uppercase tracking-wider"
+            >
+              {otherLocale === "es" ? t("switchToEs") : t("switchToEn")}
             </Link>
             <Link
               href="/profile"

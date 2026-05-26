@@ -1,17 +1,19 @@
 ﻿"use client"
 
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { usePathname } from "next/navigation"
-
-const items = [
-  { icon: "⊕", label: "Explore", href: "/" },
-  { icon: "✈", label: "Trips", href: "/dashboard" },
-  { icon: "♡", label: "Saved", href: "/saved" },
-  { icon: "◎", label: "Profile", href: "/profile" },
-]
+import { useTranslations } from "next-intl"
 
 export default function Navbar() {
   const pathname = usePathname()
+  const t = useTranslations("navbar")
+
+  const items = [
+    { icon: "⊕", label: t("explore"), href: "/" },
+    { icon: "✈", label: t("trips"), href: "/dashboard" },
+    { icon: "♡", label: t("saved"), href: "/saved" },
+    { icon: "◎", label: t("profile"), href: "/profile" },
+  ]
 
   return (
     <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-8 shadow-lg border border-gray-100 z-50">

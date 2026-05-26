@@ -1,4 +1,6 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
+import LazyTripImage from "./LazyTripImage";
 
 interface TripCardProps {
   id: string;
@@ -9,7 +11,7 @@ interface TripCardProps {
   variant?: "list" | "grid";
 }
 
-export default function TripCard({
+export default async function TripCard({
   id,
   destination,
   days,
@@ -17,8 +19,9 @@ export default function TripCard({
   image,
   variant = "list",
 }: TripCardProps) {
+  const t = await getTranslations("tripCard");
   const budgetLabel =
-    budget === 500 ? "Budget" : budget === 2000 ? "Mid-Range" : "Luxury";
+    budget === 500 ? t("budget") : budget === 2000 ? t("midRange") : t("luxury");
 
   if (variant === "grid") {
     return (
@@ -33,7 +36,10 @@ export default function TripCard({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-[#092634]" />
+          <LazyTripImage
+            destination={destination}
+            className="w-full h-full object-cover"
+          />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         <div className="absolute bottom-4 left-4">
@@ -47,7 +53,7 @@ export default function TripCard({
             className="text-white/70 text-xs mt-1"
             style={{ fontFamily: "var(--font-manrope)" }}
           >
-            {days} days · {budgetLabel}
+            {t("days", { days })} · {budgetLabel}
           </p>
         </div>
       </Link>
@@ -67,7 +73,10 @@ export default function TripCard({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-[#092634]" />
+          <LazyTripImage
+            destination={destination}
+            className="w-full h-full object-cover"
+          />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="absolute bottom-4 left-4">
@@ -85,7 +94,7 @@ export default function TripCard({
             className="text-xs text-gray-400"
             style={{ fontFamily: "var(--font-manrope)" }}
           >
-            📅 {days} days
+            📅 {t("days", { days })}
           </span>
           <span
             className="text-xs text-gray-400"
@@ -98,7 +107,7 @@ export default function TripCard({
           className="text-xs text-[#FF6E42] font-medium"
           style={{ fontFamily: "var(--font-manrope)" }}
         >
-          View →
+          {t("view")}
         </span>
       </div>
     </Link>
