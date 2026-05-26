@@ -114,11 +114,8 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-[#F9F9F9] flex flex-col">
       <header className="py-6 flex justify-center">
-        <span
-          className="text-[#092634] text-xl tracking-widest uppercase"
-          style={{ fontFamily: "var(--font-literata)" }}
-        >
-          Voyager AI
+        <span className="text-[#092634] text-lg tracking-widest uppercase">
+          Travio AI
         </span>
       </header>
       <div className="flex-1 flex items-center justify-center px-4">

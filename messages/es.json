@@ -190,5 +190,19 @@
   },
   "common": {
     "loading": "Cargando..."
+  },
+  "footer": {
+    "brand": "Travio AI",
+    "description": "Tu conserje de viajes IA personal. Descubriendo el mundo, seleccionado especialmente para ti.",
+    "exploreTitle": "Explorar",
+    "destinations": "Destinos",
+    "itineraries": "Itinerarios",
+    "pricing": "Precios",
+    "supportTitle": "Soporte",
+    "helpCenter": "Centro de Ayuda",
+    "contactUs": "Contáctanos",
+    "privacy": "Privacidad",
+    "copyright": "© 2026 Travio AI. Todos los derechos reservados.",
+    "developedBy": "Desarrollado por"
   }
 }

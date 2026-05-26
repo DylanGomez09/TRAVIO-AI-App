@@ -3,6 +3,7 @@ import { Literata, Manrope } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, setRequestLocale } from "next-intl/server"
 import { routing } from "@/i18n/routing"
+import Footer from "@/app/components/Footer"
 import "../globals.css"
 
 const literata = Literata({
@@ -42,7 +43,10 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${literata.variable} ${manrope.variable}`}>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <div className="flex flex-col min-h-screen">
+            {children}
+            <Footer />
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

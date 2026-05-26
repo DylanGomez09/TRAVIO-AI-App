@@ -1,33 +1,57 @@
 "use client"
 
-import { useTranslations } from "next-intl"
-import { Link } from "@/i18n/navigation"
+import { useTranslations, useLocale } from "next-intl"
+import { Link, usePathname } from "@/i18n/navigation"
 
 export default function LandingPage() {
   const t = useTranslations("landing")
+  const loginT = useTranslations("login")
+  const locale = useLocale()
+  const pathname = usePathname()
+  const otherLocale = locale === "en" ? "es" : "en"
+
   return (
-    <div className="h-screen overflow-hidden bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-100 shrink-0">
-        <button className="text-[#092634]">☰</button>
-        <span className="text-[#092634] text-lg tracking-widest uppercase">
-          Travio AI
-        </span>
-        <Link href="/login" className="text-[#092634]">👤</Link>
+      <header className="border-b border-gray-100 shrink-0">
+        <div className="max-w-[1200px] mx-auto px-8 py-4 flex items-center justify-between">
+          <span className="text-[#092634] text-lg tracking-widest uppercase">
+            Travio AI
+          </span>
+          <div className="flex items-center gap-4">
+            <Link
+              href={pathname}
+              locale={otherLocale}
+              className="text-xs font-medium text-gray-400 hover:text-[#092634] transition-colors uppercase tracking-wider"
+            >
+              {otherLocale === "es" ? "ES" : "EN"}
+            </Link>
+            <Link
+              href="/login"
+              className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full text-sm text-[#092634] hover:bg-gray-50 transition-colors"
+            >
+              <span className="text-xl">👤</span>
+              <span>{loginT("submit")}</span>
+            </Link>
+          </div>
+        </div>
       </header>
 
       {/* Hero */}
-      <div className="flex-1 overflow-hidden flex">
+      <div className="flex-1 flex">
         {/* Left */}
-        <div className="flex-1 flex flex-col justify-center px-8 xl:px-12 py-8">
+        <div
+          className="flex-1 flex flex-col justify-center py-8 min-w-0"
+          style={{ paddingLeft: "max(2rem, calc((100vw - 1200px) / 2 + 2rem))", paddingRight: "2rem" }}
+        >
           <span className="inline-flex items-center gap-2 text-xs text-[#092634] border border-gray-200 rounded-full px-3 py-1 w-fit mb-6">
             {t("badge")}
           </span>
 
-          <h1 className="text-4xl lg:text-5xl font-bold text-[#092634] leading-tight mb-2">
+          <h1 className="text-5xl lg:text-6xl font-black text-[#092634] leading-none mb-1">
             {t("title1")}
           </h1>
-          <h1 className="text-4xl lg:text-5xl font-bold text-[#FF6E42] leading-tight mb-6">
+          <h1 className="text-5xl lg:text-6xl font-black text-[#FF6E42] leading-none mb-8">
             {t("title2")}
           </h1>
 
